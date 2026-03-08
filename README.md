@@ -83,3 +83,7 @@ The test suite validates:
 - Exact half-split dimensions
 
 Tests generate temporary images and clean up automatically.
+
+## License
+
+MIT - see [LICENSE](LICENSE) for details
