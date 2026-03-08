@@ -7,19 +7,51 @@
 #   - splits each cropped image into 2 equal halves (left/right)
 #   - creates a PDF with all pages in sequence
 #
-# Usage: ./capss.sh [input_folder] [output_folder]
-#        If not specified, output_folder = "output" inside input_folder
+# Usage: ./capss.sh [OPTIONS] [input_folder] [output_folder]
+#
+# Options:
+#   --chop-left NUM    Pixels to remove from left edge (default: 400)
+#   --chop-right NUM   Pixels to remove from right edge (default: 400)
+#   --pdf-name NAME    Output PDF filename (default: pages_sequence.pdf)
+#
+# If output_folder is not specified, defaults to "output" inside input_folder
 # ============================================================
 
 set -euo pipefail
 
-# ── Arguments ────────────────────────────────────────────
-INPUT_DIR="${1:-.}"
-OUTPUT_DIR="${2:-$INPUT_DIR/output}"
-
+# ── Default Values ───────────────────────────────────────
 CHOP_LEFT=400
 CHOP_RIGHT=400
 PDF_NAME="pages_sequence.pdf"
+
+# ── Parse Options ────────────────────────────────────────
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --chop-left)
+      CHOP_LEFT="$2"
+      shift 2
+      ;;
+    --chop-right)
+      CHOP_RIGHT="$2"
+      shift 2
+      ;;
+    --pdf-name)
+      PDF_NAME="$2"
+      shift 2
+      ;;
+    -*)
+      echo "❌ Unknown option: $1"
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+# ── Positional Arguments ─────────────────────────────────
+INPUT_DIR="${1:-.}"
+OUTPUT_DIR="${2:-$INPUT_DIR/output}"
 
 # ── Checks ───────────────────────────────────────────────
 if command -v magick &>/dev/null; then

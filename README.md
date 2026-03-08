@@ -30,7 +30,22 @@ Perfect for creating digital copies of books from mobile screenshots.
 
 # Specify both input and output folders
 ./capss.sh /path/to/screenshots /path/to/output
+
+# Customize crop amounts
+./capss.sh --chop-left 300 --chop-right 300 /path/to/screenshots
+
+# Custom PDF name
+./capss.sh --pdf-name my_book.pdf /path/to/screenshots
+
+# Combine options
+./capss.sh --chop-left 500 --chop-right 450 --pdf-name book.pdf screenshots/
 ```
+
+## Options
+
+- `--chop-left NUM` - Pixels to remove from left edge (default: 400)
+- `--chop-right NUM` - Pixels to remove from right edge (default: 400)
+- `--pdf-name NAME` - Output PDF filename (default: pages_sequence.pdf)
 
 ## Output
 
