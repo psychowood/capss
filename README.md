@@ -65,3 +65,21 @@ CHOP_RIGHT=400  # pixels to remove from right edge
 ## Supported formats
 
 JPG, JPEG, PNG, TIFF, TIF, BMP, WEBP
+
+## Testing
+
+Run the test suite to verify functionality:
+
+```bash
+./test_capss.sh
+```
+
+The test suite validates:
+-  Valid and invalid command-line options
+- Image cropping and splitting accuracy
+- PDF generation with correct page counts
+- Custom crop values and PDF names
+- Error handling for missing/empty folders
+- Exact half-split dimensions
+
+Tests generate temporary images and clean up automatically.
