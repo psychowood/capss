@@ -16,7 +16,15 @@ jobs:
     - name: Install ImageMagick
       run: |
         sudo apt-get update
-        sudo apt-get install -y imagemagick
+        sudo apt-get install -y imagemagick ghostscript
+        # Show installed version
+        convert --version || true
+        identify --version || true
+        magick --version 2>/dev/null || echo "magick not available (using convert)"
+    
+    - name: Relax ImageMagick policies for PDF
+      run: |
+        sudo sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml
     
     - name: Run test suite
       run: |

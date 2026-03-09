@@ -13,7 +13,17 @@ NC='\033[0m' # No Color
 
 PASSED=0
 FAILED=0
-TEST_DIR="test_output"
+TEST_DIR=".test_output"
+
+# ── ImageMagick Command Detection ──────────────────────
+if command -v magick &>/dev/null; then
+  IM_CMD="magick"
+elif command -v convert &>/dev/null; then
+  IM_CMD="convert"
+else
+  echo "❌ ImageMagick not found. Install it with: apt install imagemagick"
+  exit 1
+fi
 
 # ── Helper Functions ─────────────────────────────────────
 pass() {
@@ -116,19 +126,19 @@ setup_test_images() {
   mkdir -p "$TEST_DIR/input"
   
   # Create 2 test images with known dimensions (3888x1440)
-  magick -size 1544x1440 gradient:white-gray \
-    -background lightgray -gravity west -splice 400x0 left.png
-  magick -size 1544x1440 gradient:gray-white \
-    -background lightgray -gravity east -splice 400x0 right.png
-  magick left.png right.png +append "$TEST_DIR/input/test_01.jpg"
+  $IM_CMD -size 1544x1440 gradient:white-gray \
+    -background lightgray -gravity west -splice 400x0 "$TEST_DIR/left.png"
+  $IM_CMD -size 1544x1440 gradient:gray-white \
+    -background lightgray -gravity east -splice 400x0 "$TEST_DIR/right.png"
+  $IM_CMD "$TEST_DIR/left.png" "$TEST_DIR/right.png" +append "$TEST_DIR/input/test_01.jpg"
   
-  magick -size 1544x1440 plasma:fractal \
-    -background darkgray -gravity west -splice 400x0 left.png
-  magick -size 1544x1440 plasma:fractal \
-    -background darkgray -gravity east -splice 400x0 right.png
-  magick left.png right.png +append "$TEST_DIR/input/test_02.jpg"
+  $IM_CMD -size 1544x1440 plasma:fractal \
+    -background darkgray -gravity west -splice 400x0 "$TEST_DIR/left.png"
+  $IM_CMD -size 1544x1440 plasma:fractal \
+    -background darkgray -gravity east -splice 400x0 "$TEST_DIR/right.png"
+  $IM_CMD "$TEST_DIR/left.png" "$TEST_DIR/right.png" +append "$TEST_DIR/input/test_02.jpg"
   
-  rm left.png right.png
+  rm "$TEST_DIR/left.png" "$TEST_DIR/right.png"
 }
 
 # ── Tests ────────────────────────────────────────────────
@@ -243,7 +253,7 @@ fi
 # ── Cleanup ──────────────────────────────────────────────
 info "Cleanup"
 cleanup
-pass "Test artifacts cleaned up"
+pass "Test artifacts cleaned up (in $TEST_DIR/)"
 
 # ── Summary ──────────────────────────────────────────────
 echo ""

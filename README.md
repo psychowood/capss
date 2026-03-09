@@ -84,6 +84,10 @@ The test suite validates:
 
 Tests generate temporary images and clean up automatically.
 
+### Continuous Integration
+
+Tests automatically run on GitHub Actions for every commit and pull request to `main` or `develop` branches. Check the actions tab in your GitHub repository to see test results.
+
 ## License
 
 MIT - see [LICENSE](LICENSE) for details
